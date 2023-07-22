@@ -8,11 +8,24 @@ REQUISITOS
 🟢 El componente DeporteDetail debe renderizarse en la ruta "/deportes/:id".
 🟢 El componente CreateDeporte debe renderizarse en la ruta "/deportes/create".
 */
-
 import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home/Home";
+import DeporteDetail from "./components/DeporteDetail/DeporteDetail";
+import CreateDeporte from "./components/CreateDeporte/CreateDeporte";
+import Nav from "./components/Nav/Nav";
 
 const App = () => {
-  return <div></div>;
+  return (
+    <div>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="deportes/:id" element={<DeporteDetail />} />
+        <Route path="/deportes/create" element={<CreateDeporte />} />
+      </Routes>
+    </div>
+  );
 };
 
 export default App;

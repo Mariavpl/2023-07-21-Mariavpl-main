@@ -14,27 +14,25 @@ IMPORTANTE
 
 import './deporteCard.css';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-// Importa las acciones necesarias
-// import { deleteDeporte } from './redux/actions';
+import * as action from "../../redux/actions/index";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const DeporteCard = (props) => {
-  const { deporte } = props;
-
-  // Declara el dispatch para despachar la acción
   const dispatch = useDispatch();
 
-  // Función para despachar la acción que eliminará el deporte específico
-  const handleDeleteDeporte = () => {
-     dispatch(deleteDeporte(deporte.id)); 
+  const handleDelete = () => {
+    dispatch(action.deleteDeporte(props.id)); 
   };
 
   return (
     <div className='card'>
-      <h3>{deporte.nombre}</h3>
-      <p>{deporte.descripcion}</p>
-      <img src={deporte.imagen} alt={deporte.nombre} />
-      <button onClick={handleDeleteDeporte}>x</button>
+      <button onClick={handleDelete}>x</button>
+      <Link to={`/deportes/${props.id}`}>
+        <h3>{props.nombre}</h3>
+      </Link>
+      <img src={props.imagen} alt={props.nombre} />
+      <p>Origen: {props.lugar_de_origen}</p>
     </div>
   );
 };

@@ -17,12 +17,33 @@ IMPORTANTE
       - 'React.useEffect'
 */
 
-import './deporteDetail.css';
-import React, { useState, useEffect } from 'react';
-
+import "./deporteDetail.css";
+import React, { useEffect } from "react";
+import * as actions from "../../redux/actions/index";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const DeporteDetail = (props) => {
-   return <div className='detail'></div>;
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  const deporteDetail = useSelector((state) => state.deporteDetail);
+
+  React.useEffect(() => {
+    dispatch(actions.getDeporteDetail(id));
+  }, [dispatch, id]);
+
+  return (
+    <div className="detail">
+      <h1>{deporteDetail.nombre}</h1>
+      <img src={deporteDetail.imagen} alt={deporteDetail.nombre} />
+      <h3>Descripcion: {deporteDetail.descripcion}</h3>
+      <h5>Reglas: {deporteDetail.reglas}</h5>
+      <h5>Equipamiento: {deporteDetail.equipamiento}</h5>
+      <h5>Origen: {deporteDetail.lugar_de_origen}</h5>
+      <h5>Ligas destacadas: {deporteDetail.ligas_destacadas}</h5>
+    </div>
+  );
 };
 
 export default DeporteDetail;

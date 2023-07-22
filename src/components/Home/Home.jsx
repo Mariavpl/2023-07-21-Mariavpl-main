@@ -58,6 +58,6 @@ export const mapStateToProps = (state) => {
   };
 };
 
-export const mapDispatchToProps = actions; // Utilizamos todas las acciones disponibles como props
+export const mapDispatchToProps = actions; 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

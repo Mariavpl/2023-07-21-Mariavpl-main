@@ -19,26 +19,29 @@ IMPORTANTE
       - 'React.useEffect'
 */
 
-import React, {useState} from 'react';
-import * as action from "../../redux/actions/index"
+import React, { useState } from 'react';
+import * as action from "../../redux/actions/index";
 import { useDispatch } from "react-redux";
-
 
 function validate(input) {
   let errors = {};
   if (input.nombre.length > 30) {
-      errors.nombre = 'Nombre demasiado largo';
-      }else if (!input.description) {
-          errors.description = 'Description debe ser completada';
-      }
-      if (input.difficulty >5) {
-          errors.difficulty= 'La difficulty debe estar en el rago de 1 al 5';
-                  }else if(input.duration >48){
-                      errors.duration= 'La difficulty debe ser menor a 48 dias';  
-                  }
-          return errors;
-  
-  };
+    errors.nombre = 'Nombre demasiado largo';
+  }
+  if (input.descripcion.length < 100) {
+    errors.descripcion = 'Descripción demasiada corta';
+  }
+  if (input.reglas.length < 50) {
+    errors.reglas = 'El texto de las reglas deben ser más largas';
+  }
+  if (input.difficulty > 5) {
+    errors.difficulty = 'La dificultad debe estar en el rango de 1 al 5';
+  }
+  if (input.duration > 48) {
+    errors.duration = 'La duración debe ser menor a 48 días';
+  }
+  return errors;
+};
 
 const CreateDeporte = () => {
   const [errors, setErrors] = useState({});
@@ -53,9 +56,6 @@ const CreateDeporte = () => {
   };
 
   const [input, setInput] = React.useState(initialState);
-  const [nombreError, setNombreError] = React.useState('');
-  const [descripcionError, setDescripcionError] = React.useState('');
-  const [reglasError, setReglasError] = React.useState('');
 
   var handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -65,19 +65,16 @@ const CreateDeporte = () => {
     });
     setErrors(validate({
       ...input,
-      [e.target.name] : e.target.value
-  }));
-console.log(input)
-}
-   
-    
+      [name]: value
+    }));
+  }
 
   var dispatch = useDispatch();
 
   var handleOnSubmit = (event) => {
     event.preventDefault();
 
-    if (nombreError || descripcionError || reglasError) {
+    if (Object.keys(errors).length !== 0) {
       // Si hay errores, no despachamos la acción
       return;
     }
@@ -89,13 +86,36 @@ console.log(input)
   return (
     <div>
       <form onSubmit={(event) => handleOnSubmit(event)}>
-      <label>Nombre: <input name="nombre" onChange={(e) => handleOnChange(e)} /></label>
-      {errors.nombre && (<p>{errors.nombre}</p>)}
-        <label>Descripción: <textarea name="descripcion" onChange={(e) => handleOnChange(e)} value={input.descripcion} />
-        </label>
-        {descripcionError && <p>{descripcionError}</p>}
-        <label>Reglas: <input name="reglas" onChange={(e) => handleOnChange(e)} /></label>
-        {reglasError && <p>{reglasError}</p>}
+        <label>Nombre: </label>
+        <input
+          type="text"
+          value={input.nombre}
+          name="nombre"
+          onChange={(e) => handleOnChange(e)}
+        />
+        {errors.nombre && (
+          <p>{errors.nombre}</p>
+        )}
+        <label>Descripción: </label>
+        <textarea
+          value={input.descripcion}
+          name="descripcion"
+          onChange={(e) => handleOnChange(e)}
+        />
+        {errors.descripcion && (
+          <p>{errors.descripcion}</p>
+        )}
+
+        <label>Reglas: </label>
+        <input
+          value={input.reglas}
+          name="reglas"
+          onChange={(e) => handleOnChange(e)}
+        />
+        {errors.reglas && (
+          <p>{errors.reglas}</p>
+        )}
+
         <label>Imagen: <input name="imagen" onChange={(e) => handleOnChange(e)} /></label>
         <label>Equipamiento: <input name="equipamiento" onChange={(e) => handleOnChange(e)} /></label>
         <label>Lugar de origen: <input name="lugar_de_origen" onChange={(e) => handleOnChange(e)} /></label>
